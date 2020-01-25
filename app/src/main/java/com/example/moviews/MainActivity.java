@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String url = "https://api.themoviedb.org/3/movie/top_rated?api_key=b243dc06bac1b60355d79c1938f4da27&language=en-US&page=1&region=ID";
+        String url = "https://api.themoviedb.org/3/movie/popular?api_key=b243dc06bac1b60355d79c1938f4da27&page=1&region=SG";
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();

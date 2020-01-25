@@ -60,6 +60,7 @@ public class MovieDetail extends AppCompatActivity {
         tvTitle = findViewById(R.id.tvTitle);
         tvOverview = findViewById(R.id.tvOverview);
         mListView = findViewById(R.id.horizontalvideo);
+        mListView.setFocusable(false);
 
         mVideoAdapter = new VideoAdapter(this, R.layout.video_layout, mVideos);
         mListView.setAdapter(mVideoAdapter);
