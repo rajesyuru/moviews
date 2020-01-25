@@ -9,10 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -36,9 +35,11 @@ public class MovieDetail extends AppCompatActivity {
     ImageView ivBackdrop;
     TextView tvTitle;
     TextView tvOverview;
+    ProgressBar LoadingBar;
+    ImageView ivBackground;
 
     ArrayList<Video> mVideos;
-    ListView mListView;
+    ListView mListViewDetail;
     VideoAdapter mVideoAdapter;
 
     @Override
@@ -59,13 +60,16 @@ public class MovieDetail extends AppCompatActivity {
         ivBackdrop = findViewById(R.id.ivBackdrop);
         tvTitle = findViewById(R.id.tvTitle);
         tvOverview = findViewById(R.id.tvOverview);
-        mListView = findViewById(R.id.horizontalvideo);
-        mListView.setFocusable(false);
+        LoadingBar = findViewById(R.id.LoadingBarDetail);
+        ivBackground = findViewById(R.id.LoadingDetailBackground);
+        mListViewDetail = findViewById(R.id.horizontalvideo);
+        mListViewDetail.setFocusable(false);
+
 
         mVideoAdapter = new VideoAdapter(this, R.layout.video_layout, mVideos);
-        mListView.setAdapter(mVideoAdapter);
+        mListViewDetail.setAdapter(mVideoAdapter);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListViewDetail.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Video video = mVideos.get(position);
@@ -127,6 +131,8 @@ public class MovieDetail extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     mVideoAdapter.notifyDataSetChanged();
+                                    LoadingBar.setVisibility(View.INVISIBLE);
+                                    ivBackground.setVisibility(View.INVISIBLE);
                                 }
                             });
                         }
