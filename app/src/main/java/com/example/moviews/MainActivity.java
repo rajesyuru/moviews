@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowId;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar loadingbar;
     ArrayList<Movie> mMovies;
     CustomAdapter mCustomAdapter;
+
+    private int mPage = 1;
+    private boolean isLoading = false;
+    private int mTotalPages = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String url = "https://api.themoviedb.org/3/movie/popular?api_key=b243dc06bac1b60355d79c1938f4da27&page=1&region=SG";
+        mGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int threshold = totalItemCount - visibleItemCount;
+
+                if (firstVisibleItem >= threshold && totalItemCount > 0 && !isLoading && mPage <= mTotalPages) {
+                    mPage = mPage + 1;
+                    loadPage(mPage);
+                }
+
+            }
+        });
+
+        loadPage(mPage);
+
+    }
+
+    private void loadPage(int page) {
+        String url = "https://api.themoviedb.org/3/movie/popular?api_key=b243dc06bac1b60355d79c1938f4da27&page=" + page + "&region=ID";
+
+        isLoading = true;
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
@@ -77,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         JSONObject jsonObject = new JSONObject(json);
+
+                        mTotalPages = jsonObject.getInt("total_pages");
 
                         JSONArray results = jsonObject.getJSONArray("results");
                         for(int i = 0; i < results.length(); i++) {
@@ -98,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
 
                                     loadingbar.setVisibility(View.INVISIBLE);
                                     mGridView.setVisibility(View.VISIBLE);
+
+                                    isLoading = false;
                                 }
                             });
                         }
