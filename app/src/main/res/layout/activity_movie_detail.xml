@@ -67,18 +67,12 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:layout_marginStart="10dp"
-            android:text="Trailers:"/>
+            android:text="Videos:"/>
 
-        <ListView
-            android:id="@+id/horizontalvideo"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bestList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp">
-
-
-        </ListView>
-
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     </ScrollView>

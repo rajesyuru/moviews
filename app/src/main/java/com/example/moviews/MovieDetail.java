@@ -2,6 +2,8 @@ package com.example.moviews;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -39,8 +41,8 @@ public class MovieDetail extends AppCompatActivity {
     ImageView ivBackground;
 
     ArrayList<Video> mVideos;
-    ListView mListViewDetail;
-    VideoAdapter mVideoAdapter;
+    RecyclerView mRecyclerView;
+    VideoRecyclerAdapter mVideoRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,23 +64,13 @@ public class MovieDetail extends AppCompatActivity {
         tvOverview = findViewById(R.id.tvOverview);
         LoadingBar = findViewById(R.id.LoadingBarDetail);
         ivBackground = findViewById(R.id.LoadingDetailBackground);
-        mListViewDetail = findViewById(R.id.horizontalvideo);
-        mListViewDetail.setFocusable(false);
+        mRecyclerView = findViewById(R.id.bestList);
 
+        mVideoRecyclerAdapter = new VideoRecyclerAdapter(this, R.layout.video_layout, mVideos);
+        mRecyclerView.setAdapter(mVideoRecyclerAdapter);
 
-        mVideoAdapter = new VideoAdapter(this, R.layout.video_layout, mVideos);
-        mListViewDetail.setAdapter(mVideoAdapter);
-
-        mListViewDetail.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Video video = mVideos.get(position);
-
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(video.getVideo()));
-                startActivity(intent);
-
-            }
-        });
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
 
         setTitle(title);
 
@@ -130,8 +122,8 @@ public class MovieDetail extends AppCompatActivity {
                             MovieDetail.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mVideoAdapter.notifyDataSetChanged();
-                                    LoadingBar.setVisibility(View.INVISIBLE);
+                                    mVideoRecyclerAdapter.notifyDataSetChanged();
+                                    LoadingBar.setVisibility(View.GONE);
                                     ivBackground.setVisibility(View.INVISIBLE);
                                 }
                             });

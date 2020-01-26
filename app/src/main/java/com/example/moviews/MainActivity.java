@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void run() {
                                     mCustomAdapter.notifyDataSetChanged();
 
-                                    loadingbar.setVisibility(View.INVISIBLE);
+                                    loadingbar.setVisibility(View.GONE);
                                     mGridView.setVisibility(View.VISIBLE);
 
                                     isLoading = false;
